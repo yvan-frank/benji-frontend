@@ -29,11 +29,11 @@ export default function RootLayout({ children }) {
       >
        <Suspense fallback={<LoadingSpinner />}>
           <main>
-              <Header />
+              {/*<Header />*/}
               <Providers>
                   {children}
               </Providers>
-              <Footer />
+              {/*<Footer />*/}
           </main>
        </Suspense>
       </body>

@@ -15,7 +15,32 @@ const useCategory = () => {
         }
     })
 }
+const useGetFullMenu = (menu_id) => {
+    return useQuery({
+        queryKey: ["full_menu"],
+        queryFn: async () => {
+            await sleep(500)
+            return await axios
+                .get(BASE_URL + "/menu/" + menu_id)
+                .then((res) => res.data)
+        },
+        enabled: !!menu_id
+    })
+}
+const useGetAllMenu = () => {
+    return useQuery({
+        queryKey: ["all_menu"],
+        queryFn: async () => {
+            await sleep(500)
+            return await axios
+                .get(BASE_URL + "/menu")
+                .then((res) => res.data)
+        }
+    })
+}
 
 export {
-    useCategory
+    useCategory,
+    useGetFullMenu,
+    useGetAllMenu
 }

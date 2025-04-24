@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import {AlignLeft, X} from "lucide-react";
+import {AlignLeft, ShoppingCart, X} from "lucide-react";
+import CartButton from "@/app/_components/CartButton";
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,15 +47,17 @@ export default function Header() {
                             {link.name}
                         </Link>
                     ))}
+
                 </nav>
 
                 {/* Bouton Panier/Réservation */}
-                <div className="hidden md:flex items-center space-x-4">
+                <div className="hidden md:flex items-center">
+                   <CartButton />
                     <Link
                         href="/reservations"
                         className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium"
                     >
-                        Book
+                        Book Now
                     </Link>
                 </div>
 
@@ -95,7 +98,7 @@ export default function Header() {
                                 className="block w-full bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium text-center"
                                 onClick={() => setMobileMenuOpen(false)}
                             >
-                                Book a table
+                                Book Now
                             </Link>
                         </div>
                     </div>
