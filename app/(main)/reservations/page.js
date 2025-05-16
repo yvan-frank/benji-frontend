@@ -1,7 +1,9 @@
+import Section1 from "./Components/Section1";
+
 export default function Reservations() {
     return (
-        <div>
-            <h1>Reservations</h1>
-        </div>
+        <>
+            <Section1 />
+        </>
     )
 }
