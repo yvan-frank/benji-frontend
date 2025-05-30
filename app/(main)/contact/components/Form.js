@@ -2,8 +2,26 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function ContactSection() {
+  const [names, setNames] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject ] = useState("")
+ const [ message, setMessage] = useState("")
+ 
+
+
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData()
+ formData.append("names", names)
+ formData.append("email", email)
+ formData.append("subject", subject)
+ formData.append("message",message)
+ console.log(formData);
+ }
+
   return (
     <div className="w-full h-full flex items-center justify-center px-6 lg:px-24 md:px-12 mb-6">
       <motion.div
@@ -55,6 +73,7 @@ export default function ContactSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
+          onSubmit={handleSubmit}
         >
           <h4 className="text-2xl lg:text-4xl py-3 md:py-0 lg:py-0 font-bold text-gray-800 text-center">
             Contact Us
@@ -63,27 +82,35 @@ export default function ContactSection() {
             <input
               type="text"
               placeholder="Your Name"
+              value={names}
+              onChange={(e) => setNames(e.target.value)}
               className="w-full outline-none py-2 px-2 mb-1 border-[1px] border-gray-400 rounded"
             />
             <input
               type="email"
               placeholder="Your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full outline-none py-2 px-2  lg:mt-0 md:mt-0 border-[1px] border-gray-400 rounded"
             />
          
           <input
             type="text"
             placeholder="Subject"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
             className="w-full outline-none py-2 px-2 border-[1px] border-gray-400 rounded"
           />
           <textarea
             cols={30}
             rows={5}
             placeholder="Message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             className="w-full outline-none px-4 py-4 border-[1px] border-gray-400 rounded"
           ></textarea>
          <div className="flex justify-end w-full">
-         <button className="px-4 py-1 bg-[#ffaf00] cursor-pointer text-white font-bold rounded">
+         <button  className="px-4 py-1 bg-[#ffaf00] cursor-pointer text-white font-bold rounded">
             Send Message
           </button>
          </div>

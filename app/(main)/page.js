@@ -6,6 +6,7 @@ import { CrossFilled } from "../_components/Icons/Close";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getDay } from "date-fns";
+import { Phone } from "lucide-react";
 
 export default function Home() {
   const { data, isFetching } = useCategory();
@@ -13,6 +14,10 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [time, setTime] = useState("");
+
+  const [numberOfPerson, setNumberOfPerson] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
 
   const openingHours = {
     0: { open: "13:00", close: "21:00" }, // Sunday
@@ -63,6 +68,15 @@ export default function Home() {
 
   const timeRange = getTimeRangeForDay(selectedDate);
   const timeSlots = timeRange ? generateTimeSlots(timeRange.open, timeRange.close, selectedDate) : [];
+
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    console.log(phone);
+    console.log(email);
+    console.log(numberOfPerson);
+    console.log(selectedDate);
+    console.log(time);
+  }
   return (
     <>
       <div className="relative w-full min-h-screen font-sans">
@@ -153,6 +167,8 @@ export default function Home() {
                   <input
                     type="number"
                     id="persons"
+                    value={numberOfPerson}
+                    onChange={(e) => setNumberOfPerson(e.target.value)}
                     className="w-full p-2 border outline-none border-gray-300 rounded"
                   />
                 </div>
@@ -163,6 +179,8 @@ export default function Home() {
                   <input
                     type="email"
                     id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full p-2 border outline-none border-gray-300 rounded"
                   />
                 </div>
@@ -173,6 +191,8 @@ export default function Home() {
                   <input
                     type="tel"
                     id="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     className="w-full p-2 border outline-none border-gray-300 rounded"
                   />
                 </div>
@@ -226,7 +246,7 @@ export default function Home() {
       ) : null}
                 <div className="flex justify-end">
                   <button
-                    type="submit"
+                   onClick={handleSubmit}
                     className="px-6 py-1 bg-[#ffaf00] cursor-pointer text-white rounded hover:bg-[#ED7A00] transition-all duration-300"
                   >
                     Book Now

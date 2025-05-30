@@ -1,6 +1,7 @@
 'use client'
 import {useState} from "react";
-import {UploadIcon} from "lucide-react";
+import {UploadIcon, Utensils} from "lucide-react";
+import Link from "next/link";
 
 export default function AdminLayout({ children }) {
     const [sidebarOpen, setSidebarOpen] = useState(true)
@@ -18,10 +19,17 @@ export default function AdminLayout({ children }) {
                     </button>
                 </div>
                 <nav className="mt-6">
-                    <NavItem icon={<UploadIcon className="h-5 w-5" />} active={true} expanded={sidebarOpen}>
+                   <Link href="/admin">
+                   <NavItem icon={<UploadIcon className="h-5 w-5" />} active={true} expanded={sidebarOpen}>
                        Menu management
                     </NavItem>
+                   </Link>
                     {/* Autres items de navigation... */}
+                   <Link href="/admin/food">
+                   <NavItem className="border-t-[1px] border-white" icon={<Utensils className="h-5 w-5  " />} active={true} expanded={sidebarOpen}>
+                      Food management
+                    </NavItem>
+                   </Link>
                 </nav>
             </div>
 
@@ -57,7 +65,7 @@ export default function AdminLayout({ children }) {
 
 const NavItem = ({children, icon, active, expanded}) => {
     return (
-        <div className={`flex items-center px-6 py-3 ${active ? 'bg-amber-700' : 'hover:bg-amber-700'} cursor-pointer`}>
+        <div className={`flex items-center px-6 py-3 border-t-[1px] border-white ${active ? 'bg-amber-700' : 'hover:bg-amber-700'} cursor-pointer`}>
             <div className="flex items-center">
                 <span className="mr-3">{icon}</span>
                 {expanded && <span>{children}</span>}

@@ -33,7 +33,7 @@ const useGetAllMenu = () => {
         queryFn: async () => {
             await sleep(500)
             return await axios
-                .get(BASE_URL + "/menu")
+                .get(BASE_URL + "/menu/category")
                 .then((res) => res.data)
         }
     })

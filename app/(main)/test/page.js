@@ -1,116 +1,102 @@
 "use client";
+import { BASE_URL } from "@/lib/url";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import React from 'react'
 
-import { useState } from "react";
-import DatePicker from "react-datepicker";
-import { getDay } from "date-fns";
-import "react-datepicker/dist/react-datepicker.css";
-
-export default function ReservationForm() {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [time, setTime] = useState("");
-
-  const openingHours = {
-    0: { open: "13:00", close: "21:00" }, // Sunday
-    1: null, // Monday (closed)
-    2: { open: "14:00", close: "21:00" }, // Tuesday
-    3: { open: "14:00", close: "21:00" }, // Wednesday
-    4: { open: "14:00", close: "21:00" }, // Thursday
-    5: { open: "14:00", close: "23:59" }, // Friday
-    6: { open: "14:00", close: "23:59" }, // Saturday
-  };
-
-  const isDateSelectable = (date) => {
-    const today = new Date();
-    return date >= new Date(today.setHours(0, 0, 0, 0)) && getDay(date) !== 1;
-  };
-
-  const getTimeRangeForDay = (date) => {
-    if (!date) return null;
-    const day = date.getDay();
-    return openingHours[day];
-  };
-
-  const generateTimeSlots = (start, end, date) => {
-    const [startHour, startMinute] = start.split(":").map(Number);
-    const [endHour, endMinute] = end.split(":").map(Number);
-
-    const slots = [];
-    const now = new Date();
-    const isToday = date.toDateString() === now.toDateString();
-
-    let current = new Date(date);
-    current.setHours(startHour, startMinute, 0, 0);
-
-    const endTime = new Date(date);
-    endTime.setHours(endHour, endMinute, 0, 0);
-
-    while (current <= endTime) {
-      if (!isToday || current > now) {
-        const hours = String(current.getHours()).padStart(2, "0");
-        const minutes = String(current.getMinutes()).padStart(2, "0");
-        slots.push(`${hours}:${minutes}`);
-      }
-      current.setMinutes(current.getMinutes() + 30);
-    }
-
-    return slots;
-  };
-
-  const timeRange = getTimeRangeForDay(selectedDate);
-  const timeSlots = timeRange ? generateTimeSlots(timeRange.open, timeRange.close, selectedDate) : [];
+export default function page() {
+  const [food, setFood] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+useEffect(() => {
+  setLoading(true);
+  axios
+    .get(`${BASE_URL}/menu/category`)
+    .then((response) => {
+      console.log(response.data);
+      setFood(response.data);
+      setLoading(false);
+    })
+    .catch((error) => {
+      console.error("Error fetching categories:", error);
+      setLoading(false);
+    });
+}, []);
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-[#DB9423]">Make a Reservation</h2>
-
-      <div className="mb-4">
-        <label className="block mb-1 font-medium">Select Date</label>
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => {
-            setSelectedDate(date);
-            setTime(""); // reset time
-          }}
-          filterDate={isDateSelectable}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="Select a date"
-          className="w-full p-3 border border-[#DB9423] rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ED7A00]"
-          calendarClassName="custom-calendar"
-          required
-        />
-      </div>
-
-      {selectedDate && timeRange ? (
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">Select Time</label>
-          {timeSlots.length > 0 ? (
-            <>
-              <select
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded outline-none"
-                required
-              >
-                <option value="" disabled>
-                  Choose a time
-                </option>
-                {timeSlots.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
-                  </option>
-                ))}
-              </select>
-              <p className="text-sm text-gray-500 mt-1">
-                Open from {timeRange.open} to {timeRange.close}
-              </p>
-            </>
-          ) : (
-            <p className="text-red-600">No more time slots available today.</p>
-          )}
-        </div>
-      ) : selectedDate ? (
-        <p className="text-red-600">Sorry, we're closed on Mondays.</p>
-      ) : null}
+    <div>
+      <table className="mt-8 w-full">
+  <thead className="w-full bg-[#FCFCFD] border-dashed border-t border-gray-300">
+    <tr className="w-full">
+      <th className="py-5 text-gray-500 uppercase font-light text-left px-4">Image</th>
+      <th className="py-5 text-gray-500 uppercase font-light text-left px-4">Name</th>
+      <th className="py-5 text-gray-500 uppercase font-light text-left px-4">Price</th>
+      <th className="py-5 text-gray-500 uppercase font-light text-left px-4">Description</th>
+      <th className="py-5 text-gray-500 uppercase font-light text-left px-4">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {food.map((category, categoryIndex) => (
+      <React.Fragment key={categoryIndex}>
+        {/* Optional: Display category name as a row */}
+        <tr className="bg-gray-50">
+          <td colSpan="5" className="py-3 px-4 font-medium text-gray-700">
+            {category.name}
+          </td>
+        </tr>
+        
+        {/* Display items in this category */}
+        {category.items.map((item) => (
+          <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
+            {/* Image */}
+            <td className="py-4 px-4">
+              {item.image_url && (
+                <img 
+                  src={item.image_url} 
+                  alt={item.name}
+                  className="w-16 h-16 object-cover rounded"
+                  onError={(e) => {
+                    e.target.src = '/assets/Img1.jpg'; // Fallback image
+                  }}
+                />
+              )}
+            </td>
+            
+            {/* Name */}
+            <td className="py-4 px-4 font-medium text-gray-900">
+              {item.name}
+            </td>
+            
+            {/* Price */}
+            <td className="py-4 px-4">
+              {new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'XAF' // Assuming CFA francs
+              }).format(item.price / 100)} {/* Divide by 100 if price is in cents */}
+            </td>
+            
+            {/* Description */}
+            <td className="py-4 px-4 text-gray-600">
+              {item.description || 'No description'}
+            </td>
+            
+            {/* Actions */}
+            <td className="py-4 px-4">
+              <div className="flex space-x-2">
+                <button className="text-blue-600 hover:text-blue-800">
+                  Edit
+                </button>
+                <button className="text-red-600 hover:text-red-800">
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </React.Fragment>
+    ))}
+  </tbody>
+</table>
     </div>
-  );
+  )
 }
