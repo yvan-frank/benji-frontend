@@ -1,10 +1,23 @@
 'use client'
+<<<<<<< HEAD
 import {useState} from "react";
 import {UploadIcon, Utensils} from "lucide-react";
+=======
+import React, {useEffect, useState} from "react";
+import {AlignStartVertical, Calendar, ChefHat, ListOrdered, UploadIcon} from "lucide-react";
+import {usePathname} from "next/navigation";
+>>>>>>> local
 import Link from "next/link";
 
 export default function AdminLayout({ children }) {
     const [sidebarOpen, setSidebarOpen] = useState(true)
+    const pathname = usePathname()
+
+    const [currentTime, setCurrentTime] = useState(new Date());
+    useEffect(() => {
+        const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     return (
         <div className="flex h-screen bg-zinc-50">
@@ -19,11 +32,23 @@ export default function AdminLayout({ children }) {
                     </button>
                 </div>
                 <nav className="mt-6">
+<<<<<<< HEAD
                    <Link href="/admin">
                    <NavItem icon={<UploadIcon className="h-5 w-5" />} active={true} expanded={sidebarOpen}>
                        Menu management
                     </NavItem>
                    </Link>
+=======
+                    <NavItem link="/menu" icon={<UploadIcon className="h-5 w-5" />} active={pathname.includes("menu")} expanded={sidebarOpen}>
+                       Menu management
+                    </NavItem>
+                    <NavItem link="/orders" icon={<ListOrdered className="h-5 w-5" />} active={pathname.includes("orders")} expanded={sidebarOpen}>
+                        Orders
+                    </NavItem>
+                    <NavItem link="/analytics" icon={<AlignStartVertical className="h-5 w-5" />} active={pathname.includes("analytics")} expanded={sidebarOpen}>
+                        Analytics
+                    </NavItem>
+>>>>>>> local
                     {/* Autres items de navigation... */}
                    <Link href="/admin/food">
                    <NavItem className="border-t-[1px] border-white" icon={<Utensils className="h-5 w-5  " />} active={true} expanded={sidebarOpen}>
@@ -36,20 +61,30 @@ export default function AdminLayout({ children }) {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <header className="bg-white shadow-sm z-10">
                     <div className="flex items-center justify-between px-6 py-4">
-                        <h2 className="text-lg font-semibold text-gray-800">Dashboard</h2>
-                        <div className="flex items-center space-x-4">
-                            <button className="p-1 rounded-full bg-gray-100 hover:bg-gray-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                                </svg>
-                            </button>
-                            <div className="flex items-center">
-                                <img className="h-8 w-8 rounded-full" src="https://via.placeholder.com/150"
-                                     alt="Admin"/>
-                                {sidebarOpen && <span className="ml-2 font-medium">Admin</span>}
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-orange-500 rounded-xl">
+                                <ChefHat className="w-8 h-8 text-white"/>
                             </div>
+                            <div>
+                                <h1 className="text-2xl font-bold text-gray-900">Benji African Delicacies</h1>
+                                <p className="text-gray-600">Restaurant dashboard</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="text-right">
+                                <p className="text-sm text-gray-500">
+                                    {currentTime.toLocaleDateString('fr-FR', {
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    })}
+                                </p>
+                                <p className="text-lg font-semibold text-gray-900">
+                                    {currentTime.toLocaleTimeString('fr-FR')}
+                                </p>
+                            </div>
+                            <Calendar className="w-6 h-6 text-gray-600"/>
                         </div>
                     </div>
                 </header>
@@ -63,13 +98,19 @@ export default function AdminLayout({ children }) {
     );
 }
 
-const NavItem = ({children, icon, active, expanded}) => {
+const NavItem = ({children, icon, active, expanded, link}) => {
     return (
+<<<<<<< HEAD
         <div className={`flex items-center px-6 py-3 border-t-[1px] border-white ${active ? 'bg-amber-700' : 'hover:bg-amber-700'} cursor-pointer`}>
+=======
+        <Link
+            href={`/admin${link}`}
+            className={`flex items-center px-6 py-3 ${active ? 'bg-amber-700' : 'hover:bg-amber-700/10'} cursor-pointer`}>
+>>>>>>> local
             <div className="flex items-center">
                 <span className="mr-3">{icon}</span>
                 {expanded && <span>{children}</span>}
             </div>
-        </div>
+        </Link>
     )
 }
