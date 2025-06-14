@@ -1,12 +1,9 @@
 'use client'
-<<<<<<< HEAD
-import {useState} from "react";
-import {UploadIcon, Utensils} from "lucide-react";
-=======
+
 import React, {useEffect, useState} from "react";
 import {AlignStartVertical, Calendar, ChefHat, ListOrdered, UploadIcon} from "lucide-react";
 import {usePathname} from "next/navigation";
->>>>>>> local
+
 import Link from "next/link";
 
 export default function AdminLayout({ children }) {
@@ -32,13 +29,13 @@ export default function AdminLayout({ children }) {
                     </button>
                 </div>
                 <nav className="mt-6">
-<<<<<<< HEAD
+
                    <Link href="/admin">
                    <NavItem icon={<UploadIcon className="h-5 w-5" />} active={true} expanded={sidebarOpen}>
                        Menu management
                     </NavItem>
                    </Link>
-=======
+
                     <NavItem link="/menu" icon={<UploadIcon className="h-5 w-5" />} active={pathname.includes("menu")} expanded={sidebarOpen}>
                        Menu management
                     </NavItem>
@@ -48,7 +45,7 @@ export default function AdminLayout({ children }) {
                     <NavItem link="/analytics" icon={<AlignStartVertical className="h-5 w-5" />} active={pathname.includes("analytics")} expanded={sidebarOpen}>
                         Analytics
                     </NavItem>
->>>>>>> local
+
                     {/* Autres items de navigation... */}
                    <Link href="/admin/food">
                    <NavItem className="border-t-[1px] border-white" icon={<Utensils className="h-5 w-5  " />} active={true} expanded={sidebarOpen}>
@@ -100,13 +97,10 @@ export default function AdminLayout({ children }) {
 
 const NavItem = ({children, icon, active, expanded, link}) => {
     return (
-<<<<<<< HEAD
-        <div className={`flex items-center px-6 py-3 border-t-[1px] border-white ${active ? 'bg-amber-700' : 'hover:bg-amber-700'} cursor-pointer`}>
-=======
         <Link
             href={`/admin${link}`}
             className={`flex items-center px-6 py-3 ${active ? 'bg-amber-700' : 'hover:bg-amber-700/10'} cursor-pointer`}>
->>>>>>> local
+
             <div className="flex items-center">
                 <span className="mr-3">{icon}</span>
                 {expanded && <span>{children}</span>}
